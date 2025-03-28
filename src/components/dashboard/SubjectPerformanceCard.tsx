@@ -38,24 +38,21 @@ const SubjectPerformanceCard = ({ data, className }: SubjectPerformanceCardProps
           top: 10, 
           right: isMobile ? 10 : 30, 
           left: isMobile ? 0 : 20, 
-          bottom: 15 
+          bottom: 30 
         }}
       >
         <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
         <RechartsPrimitive.XAxis 
           dataKey="name" 
           tick={{ fontSize: isMobile ? 10 : 12 }}
+          height={40}
+          tickMargin={8}
         />
         <RechartsPrimitive.YAxis 
           tick={{ fontSize: isMobile ? 10 : 12 }}
           domain={[0, 100]}
-          label={{ 
-            value: viewMode === "score" ? "Average Score (%)" : "Passing Rate (%)", 
-            angle: -90, 
-            position: 'insideLeft',
-            style: { textAnchor: 'middle', fontSize: '12px' },
-            dx: -15
-          }}
+          width={isMobile ? 30 : 40}
+          tickFormatter={(value) => `${value}%`}
         />
         <RechartsPrimitive.Tooltip 
           formatter={(value, name) => {
@@ -64,7 +61,10 @@ const SubjectPerformanceCard = ({ data, className }: SubjectPerformanceCardProps
             return [value, name];
           }} 
         />
-        <RechartsPrimitive.Legend wrapperStyle={{ paddingTop: "10px" }} />
+        <RechartsPrimitive.Legend 
+          wrapperStyle={{ paddingTop: "10px" }} 
+          height={36}
+        />
         {viewMode === "score" ? (
           <RechartsPrimitive.Bar 
             dataKey="avgScore" 
@@ -86,9 +86,9 @@ const SubjectPerformanceCard = ({ data, className }: SubjectPerformanceCardProps
 
   return (
     <div className={`dashboard-card overflow-hidden ${className}`}>
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
         <h3 className="text-lg font-semibold">Subject Performance</h3>
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           <Button 
             size="sm" 
             variant={viewMode === "score" ? "default" : "outline"} 
@@ -124,7 +124,7 @@ const SubjectPerformanceCard = ({ data, className }: SubjectPerformanceCardProps
         </div>
       </div>
       
-      <div className="h-64 md:h-72 mb-6 -mx-2">
+      <div className="h-64 md:h-80 mb-6 -mx-2">
         <ChartContainer
           config={{
             avgScore: { color: "hsl(var(--primary))" },

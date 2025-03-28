@@ -2,7 +2,7 @@
 import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
-import { BookOpen, BarChart, PlusCircle, Layers, Users, Calendar, Settings, X } from "lucide-react";
+import { BookOpen, BarChart, PlusCircle, Layers, Users, Calendar, Settings, X, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type NavItemProps = {
@@ -38,6 +38,7 @@ const MobileSidebar = ({ open, onClose }: MobileSidebarProps) => {
   const location = useLocation();
   
   const isActive = (path: string) => location.pathname === path;
+  const isClassActive = (classId: string) => location.pathname.includes(`/class/${classId}`);
 
   if (!open) return null;
   
@@ -89,6 +90,13 @@ const MobileSidebar = ({ open, onClose }: MobileSidebarProps) => {
                 active={isActive("/manage-students")}
                 onClick={onClose}
               />
+              <NavItem 
+                to="/activity" 
+                label="Activity Log" 
+                icon={<Activity className="h-5 w-5" />} 
+                active={isActive("/activity")}
+                onClick={onClose}
+              />
             </nav>
           </div>
           
@@ -96,24 +104,24 @@ const MobileSidebar = ({ open, onClose }: MobileSidebarProps) => {
             <h2 className="text-xs uppercase text-gray-500 font-semibold tracking-wider">Classes</h2>
             <nav className="flex flex-col gap-1">
               <NavItem 
-                to="/class/math-101" 
-                label="Math 101" 
+                to="/class/class-6" 
+                label="Class 6" 
                 icon={<BookOpen className="h-5 w-5" />} 
-                active={isActive("/class/math-101")}
+                active={isClassActive("class-6")}
                 onClick={onClose}
               />
               <NavItem 
-                to="/class/science-101" 
-                label="Science 101" 
+                to="/class/class-7" 
+                label="Class 7" 
                 icon={<BookOpen className="h-5 w-5" />} 
-                active={isActive("/class/science-101")}
+                active={isClassActive("class-7")}
                 onClick={onClose}
               />
               <NavItem 
-                to="/class/history-101" 
-                label="History 101" 
+                to="/class/class-8" 
+                label="Class 8" 
                 icon={<BookOpen className="h-5 w-5" />} 
-                active={isActive("/class/history-101")}
+                active={isClassActive("class-8")}
                 onClick={onClose}
               />
             </nav>

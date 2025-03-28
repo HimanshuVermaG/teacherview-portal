@@ -91,18 +91,6 @@ const Sidebar = () => {
               icon={<BookOpen className="h-5 w-5" />} 
               active={isClassActive("class-8")}
             />
-            <NavItem 
-              to="/class/class-9" 
-              label="Class 9" 
-              icon={<BookOpen className="h-5 w-5" />} 
-              active={isClassActive("class-9")}
-            />
-            <NavItem 
-              to="/class/class-10" 
-              label="Class 10" 
-              icon={<BookOpen className="h-5 w-5" />} 
-              active={isClassActive("class-10")}
-            />
           </nav>
         </div>
         

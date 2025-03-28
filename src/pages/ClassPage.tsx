@@ -4,28 +4,30 @@ import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PlusCircle, BookOpen, Users, BarChart } from "lucide-react";
-import ContentCard from "@/components/content/ContentCard";
+import ContentList from "@/components/content/ContentList";
 import SubjectCard from "@/components/dashboard/SubjectCard";
-import { ChartContainer } from "@/components/ui/chart";
-import * as RechartsPrimitive from "recharts";
+import PerformanceChart from "@/components/dashboard/PerformanceChart";
+import RecentActivity from "@/components/dashboard/RecentActivity";
 
 // Mock data for subjects in each class
 const classSubjects = {
-  "math-101": [
+  "class-6": [
     { id: "math", name: "Mathematics", avgScore: 78, studentCount: 32, passingRate: 92, topPerformer: "Alex J.", color: "blue" },
-    { id: "algebra", name: "Algebra", avgScore: 75, studentCount: 30, passingRate: 88, topPerformer: "Madison K.", color: "green" },
-    { id: "geometry", name: "Geometry", avgScore: 82, studentCount: 28, passingRate: 93, topPerformer: "Tyler P.", color: "purple" },
-  ],
-  "science-101": [
     { id: "science", name: "Science", avgScore: 82, studentCount: 28, passingRate: 94, topPerformer: "Jordan L.", color: "green" },
-    { id: "physics", name: "Physics", avgScore: 79, studentCount: 25, passingRate: 90, topPerformer: "Casey R.", color: "blue" },
-    { id: "chemistry", name: "Chemistry", avgScore: 77, studentCount: 26, passingRate: 89, topPerformer: "Morgan T.", color: "orange" },
-    { id: "biology", name: "Biology", avgScore: 84, studentCount: 27, passingRate: 95, topPerformer: "Parker S.", color: "purple" },
+    { id: "english", name: "English", avgScore: 85, studentCount: 30, passingRate: 96, topPerformer: "Taylor S.", color: "purple" },
+    { id: "history", name: "History", avgScore: 75, studentCount: 30, passingRate: 88, topPerformer: "Riley W.", color: "orange" },
   ],
-  "history-101": [
-    { id: "history", name: "History", avgScore: 75, studentCount: 30, passingRate: 88, topPerformer: "Riley W.", color: "purple" },
-    { id: "world-history", name: "World History", avgScore: 73, studentCount: 28, passingRate: 85, topPerformer: "Quinn B.", color: "red" },
-    { id: "us-history", name: "US History", avgScore: 79, studentCount: 29, passingRate: 91, topPerformer: "Dakota J.", color: "blue" },
+  "class-7": [
+    { id: "math", name: "Mathematics", avgScore: 76, studentCount: 28, passingRate: 90, topPerformer: "Madison K.", color: "blue" },
+    { id: "science", name: "Science", avgScore: 79, studentCount: 25, passingRate: 92, topPerformer: "Casey R.", color: "green" },
+    { id: "english", name: "English", avgScore: 82, studentCount: 27, passingRate: 94, topPerformer: "Morgan T.", color: "purple" },
+    { id: "history", name: "History", avgScore: 73, studentCount: 28, passingRate: 89, topPerformer: "Quinn B.", color: "orange" },
+  ],
+  "class-8": [
+    { id: "math", name: "Mathematics", avgScore: 80, studentCount: 30, passingRate: 93, topPerformer: "Tyler P.", color: "blue" },
+    { id: "science", name: "Science", avgScore: 84, studentCount: 27, passingRate: 95, topPerformer: "Parker S.", color: "green" },
+    { id: "english", name: "English", avgScore: 81, studentCount: 29, passingRate: 93, topPerformer: "Dakota J.", color: "purple" },
+    { id: "history", name: "History", avgScore: 77, studentCount: 29, passingRate: 91, topPerformer: "Riley W.", color: "orange" },
   ],
 };
 
@@ -47,32 +49,70 @@ const performanceTrendData = [
   { month: "Jun", avgScore: 82 },
 ];
 
+// Class details
 const classDetails = {
-  "math-101": {
-    name: "Math 101",
-    subject: "Mathematics",
-    description: "Introduction to algebra, geometry, and trigonometry",
+  "class-6": {
+    name: "Class 6",
+    subject: "All Subjects",
+    description: "Sixth grade core curriculum including Mathematics, Science, English, and History",
     studentCount: 32,
     contentCount: 4,
     color: "blue"
   },
-  "science-101": {
-    name: "Science 101",
-    subject: "Science",
-    description: "Basic concepts in physics, chemistry, and biology",
+  "class-7": {
+    name: "Class 7",
+    subject: "All Subjects",
+    description: "Seventh grade core curriculum including Mathematics, Science, English, and History",
     studentCount: 28,
     contentCount: 7,
     color: "green"
   },
-  "history-101": {
-    name: "History 101",
-    subject: "History",
-    description: "Overview of world history from ancient civilizations to modern times",
+  "class-8": {
+    name: "Class 8",
+    subject: "All Subjects",
+    description: "Eighth grade core curriculum including Mathematics, Science, English, and History",
     studentCount: 30,
     contentCount: 3,
     color: "purple"
   },
 };
+
+// Recent activities
+const recentClassActivities = [
+  { 
+    id: '1',
+    icon: Users,
+    iconBg: 'bg-blue-100',
+    iconColor: 'text-blue-600',
+    title: '5 new submissions',
+    content: 'in Algebra Quiz',
+    time: '2 hours ago',
+    actionText: 'View Details',
+    actionLink: '/class/class-6/subject/math'
+  },
+  { 
+    id: '2',
+    icon: BarChart,
+    iconBg: 'bg-green-100',
+    iconColor: 'text-green-600',
+    title: 'Class average increased',
+    content: 'by 2.5% this week',
+    time: 'Yesterday',
+    actionText: 'View Report',
+    actionLink: '/reports?class=class-7'
+  },
+  { 
+    id: '3',
+    icon: BookOpen,
+    iconBg: 'bg-purple-100',
+    iconColor: 'text-purple-600',
+    title: 'New content published',
+    content: 'Practice Set',
+    time: '3 days ago',
+    actionText: 'View Content',
+    actionLink: '/class/class-8/subject/science'
+  },
+];
 
 const ClassPage = () => {
   const { classId } = useParams<{ classId: string }>();
@@ -89,29 +129,6 @@ const ClassPage = () => {
   
   const [activeTab, setActiveTab] = useState("subjects");
   
-  // Performance trend chart
-  const performanceTrendChart = (
-    <RechartsPrimitive.ResponsiveContainer width="100%" height={300}>
-      <RechartsPrimitive.LineChart
-        data={performanceTrendData}
-        margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-      >
-        <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
-        <RechartsPrimitive.XAxis dataKey="month" />
-        <RechartsPrimitive.YAxis domain={[0, 100]} />
-        <RechartsPrimitive.Tooltip 
-          formatter={(value) => [`${value}%`, "Average Score"]}
-        />
-        <RechartsPrimitive.Line
-          type="monotone"
-          dataKey="avgScore"
-          stroke="var(--color-avgScore)"
-          activeDot={{ r: 8 }}
-        />
-      </RechartsPrimitive.LineChart>
-    </RechartsPrimitive.ResponsiveContainer>
-  );
-  
   return (
     <div className="animate-fade-in">
       <div className="flex flex-col md:flex-row justify-between items-start mb-8 gap-4">
@@ -127,13 +144,13 @@ const ClassPage = () => {
         
         <div className="flex items-center gap-3">
           <Button variant="outline" asChild>
-            <Link to="/reports">
+            <Link to={`/reports?class=${classId}`}>
               <BarChart className="h-4 w-4 mr-1" />
               Class Report
             </Link>
           </Button>
           <Button asChild>
-            <Link to="/create">
+            <Link to={`/create?class=${classId}`}>
               <PlusCircle className="h-4 w-4 mr-1" />
               Create Content
             </Link>
@@ -180,18 +197,15 @@ const ClassPage = () => {
       </div>
       
       <div className="mb-8">
-        <div className="dashboard-card">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Performance Trend</h2>
-          <div className="h-80">
-            <ChartContainer
-              config={{
-                avgScore: { color: "hsl(var(--primary))" }
-              }}
-            >
-              {performanceTrendChart}
-            </ChartContainer>
-          </div>
-        </div>
+        <PerformanceChart
+          title="Performance Trend"
+          data={performanceTrendData}
+          xAxisKey="month"
+          lines={[
+            { dataKey: "avgScore", name: "Average Score", colorKey: "avgScore" }
+          ]}
+          height={280}
+        />
       </div>
       
       <Tabs defaultValue="subjects" className="mb-8">
@@ -221,7 +235,7 @@ const ClassPage = () => {
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {subjects.map((subject) => (
               <SubjectCard
                 key={subject.id}
@@ -239,31 +253,11 @@ const ClassPage = () => {
         </TabsContent>
         
         <TabsContent value="content" className="space-y-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-800">Class Content</h2>
-            <Button asChild>
-              <Link to="/create">
-                <PlusCircle className="h-4 w-4 mr-1" />
-                Create New
-              </Link>
-            </Button>
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {mockContent.map((item) => (
-              <ContentCard
-                key={item.id}
-                id={item.id}
-                title={item.title}
-                type={item.type as "quiz" | "practice" | "test"}
-                status={item.status as "draft" | "published" | "scheduled"}
-                timeLimit={item.timeLimit}
-                questionCount={item.questionCount}
-                submissions={item.submissions}
-                dueDate={item.dueDate}
-              />
-            ))}
-          </div>
+          <ContentList 
+            title="Class Content" 
+            content={mockContent} 
+            createLink={`/create?class=${classId}`} 
+          />
         </TabsContent>
         
         <TabsContent value="students">
@@ -288,53 +282,7 @@ const ClassPage = () => {
       </Tabs>
       
       <div className="dashboard-card">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-gray-800">Recent Activity</h2>
-          <Button variant="outline" size="sm">
-            View All
-          </Button>
-        </div>
-        
-        <div className="space-y-4">
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-              <Users className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="text-sm">
-                <span className="font-medium">5 new submissions</span> in <span className="text-teacher-primary">Algebra Quiz</span>
-              </p>
-              <p className="text-xs text-gray-500 mt-1">2 hours ago</p>
-              <Button variant="link" size="sm" className="h-6 p-0 mt-1">View Details</Button>
-            </div>
-          </div>
-          
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
-              <BarChart className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="text-sm">
-                <span className="font-medium">Class average increased</span> by <span className="text-green-600">2.5%</span> this week
-              </p>
-              <p className="text-xs text-gray-500 mt-1">Yesterday</p>
-              <Button variant="link" size="sm" className="h-6 p-0 mt-1">View Report</Button>
-            </div>
-          </div>
-          
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
-              <BookOpen className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="text-sm">
-                <span className="font-medium">New content published</span> - <span className="text-teacher-primary">Practice Set</span>
-              </p>
-              <p className="text-xs text-gray-500 mt-1">3 days ago</p>
-              <Button variant="link" size="sm" className="h-6 p-0 mt-1">View Content</Button>
-            </div>
-          </div>
-        </div>
+        <RecentActivity activities={recentClassActivities} />
       </div>
     </div>
   );

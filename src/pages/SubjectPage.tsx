@@ -4,17 +4,17 @@ import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PlusCircle, BookOpen, Users, BarChart, Clock } from "lucide-react";
-import ContentCard from "@/components/content/ContentCard";
+import ContentList from "@/components/content/ContentList";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartContainer } from "@/components/ui/chart";
-import * as RechartsPrimitive from "recharts";
+import PerformanceChart from "@/components/dashboard/PerformanceChart";
+import RecentActivity from "@/components/dashboard/RecentActivity";
 
 // Mock data for the subject page
 const subjectDetails = {
   "math": {
     name: "Mathematics",
     description: "Introduction to algebra, geometry, and trigonometry",
-    studentCount: 121,
+    studentCount: 32,
     avgScore: 78,
     passingRate: 92,
     topPerformer: "Alex J."
@@ -22,7 +22,7 @@ const subjectDetails = {
   "science": {
     name: "Science",
     description: "Basic concepts in physics, chemistry, and biology",
-    studentCount: 98,
+    studentCount: 28,
     avgScore: 82,
     passingRate: 94,
     topPerformer: "Jordan L."
@@ -30,7 +30,7 @@ const subjectDetails = {
   "history": {
     name: "History",
     description: "Overview of world history from ancient civilizations to modern times",
-    studentCount: 87,
+    studentCount: 30,
     avgScore: 75,
     passingRate: 88,
     topPerformer: "Riley W."
@@ -38,52 +38,82 @@ const subjectDetails = {
   "english": {
     name: "English",
     description: "Reading comprehension, grammar, and composition",
-    studentCount: 105,
+    studentCount: 30,
     avgScore: 85,
     passingRate: 96,
     topPerformer: "Taylor S."
   }
 };
 
-// Mock content data
-const mockContent = [
-  { id: "quiz-1", title: "Basic Concepts Quiz", type: "quiz", status: "published", timeLimit: 30, questionCount: 10, submissions: 28, dueDate: "Apr 15, 2023" },
-  { id: "practice-1", title: "Practice Exercises Set 1", type: "practice", status: "published", questionCount: 20, submissions: 15 },
-  { id: "test-1", title: "Mid-term Assessment", type: "test", status: "scheduled", timeLimit: 60, questionCount: 25, submissions: 0, dueDate: "May 5, 2023" },
-  { id: "quiz-2", title: "Advanced Topics", type: "quiz", status: "draft", timeLimit: 25, questionCount: 8, submissions: 0 },
-];
+// Mock content data by subject
+const mockContentBySubject = {
+  "math": [
+    { id: "quiz-1", title: "Algebra Fundamentals", type: "quiz", status: "published", timeLimit: 30, questionCount: 10, submissions: 28, dueDate: "Apr 15, 2023" },
+    { id: "practice-1", title: "Equations Practice Set", type: "practice", status: "published", questionCount: 20, submissions: 15 },
+    { id: "test-1", title: "Mid-term Assessment", type: "test", status: "scheduled", timeLimit: 60, questionCount: 25, submissions: 0, dueDate: "May 5, 2023" },
+    { id: "quiz-2", title: "Geometry Basics", type: "quiz", status: "draft", timeLimit: 25, questionCount: 8, submissions: 0 },
+  ],
+  "science": [
+    { id: "quiz-1", title: "Forces and Motion", type: "quiz", status: "published", timeLimit: 25, questionCount: 8, submissions: 22, dueDate: "Apr 10, 2023" },
+    { id: "practice-1", title: "Chemistry Practice", type: "practice", status: "published", questionCount: 15, submissions: 18 },
+    { id: "test-1", title: "Science Assessment", type: "test", status: "scheduled", timeLimit: 45, questionCount: 20, submissions: 0, dueDate: "May 10, 2023" },
+  ],
+  "english": [
+    { id: "quiz-1", title: "Grammar Basics", type: "quiz", status: "published", timeLimit: 20, questionCount: 10, submissions: 25, dueDate: "Apr 18, 2023" },
+    { id: "practice-1", title: "Reading Comprehension", type: "practice", status: "published", questionCount: 12, submissions: 20 },
+    { id: "test-1", title: "Literature Review", type: "test", status: "published", timeLimit: 40, questionCount: 15, submissions: 23, dueDate: "Apr 5, 2023" },
+  ],
+  "history": [
+    { id: "quiz-1", title: "Ancient Civilizations", type: "quiz", status: "published", timeLimit: 30, questionCount: 12, submissions: 27, dueDate: "Apr 8, 2023" },
+    { id: "practice-1", title: "Historical Analysis", type: "practice", status: "published", questionCount: 10, submissions: 19 },
+    { id: "test-1", title: "World History Exam", type: "test", status: "scheduled", timeLimit: 50, questionCount: 22, submissions: 0, dueDate: "May 15, 2023" },
+  ]
+};
 
 // Mock performance data
 const performanceData = [
-  {
-    name: "Week 1",
-    avgScore: 72,
-    classAvg: 68,
+  { name: "Week 1", avgScore: 72, classAvg: 68 },
+  { name: "Week 2", avgScore: 78, classAvg: 70 },
+  { name: "Week 3", avgScore: 75, classAvg: 72 },
+  { name: "Week 4", avgScore: 82, classAvg: 75 },
+  { name: "Week 5", avgScore: 84, classAvg: 76 },
+  { name: "Week 6", avgScore: 88, classAvg: 78 },
+];
+
+// Recent activities
+const recentSubjectActivities = [
+  { 
+    id: '1',
+    icon: Users,
+    iconBg: 'bg-blue-100',
+    iconColor: 'text-blue-600',
+    title: '5 new submissions',
+    content: 'Basic Concepts Quiz',
+    time: '2 hours ago',
+    actionText: 'Review submissions',
+    actionLink: '/submissions/quiz-1'
   },
-  {
-    name: "Week 2",
-    avgScore: 78,
-    classAvg: 70,
+  { 
+    id: '2',
+    icon: BarChart,
+    iconBg: 'bg-green-100',
+    iconColor: 'text-green-600',
+    title: 'Class average increased',
+    content: 'by 2.5% this week',
+    time: 'Yesterday',
+    actionText: 'View Report',
+    actionLink: '/reports?subject=math'
   },
-  {
-    name: "Week 3",
-    avgScore: 75,
-    classAvg: 72,
-  },
-  {
-    name: "Week 4",
-    avgScore: 82,
-    classAvg: 75,
-  },
-  {
-    name: "Week 5",
-    avgScore: 84,
-    classAvg: 76,
-  },
-  {
-    name: "Week 6",
-    avgScore: 88,
-    classAvg: 78,
+  { 
+    id: '3',
+    icon: BookOpen,
+    iconBg: 'bg-purple-100',
+    iconColor: 'text-purple-600',
+    title: 'New content published',
+    content: 'Practice Exercises Set 1',
+    time: '3 days ago',
+    actionText: 'View Content',
+    actionLink: '/content/practice-1'
   },
 ];
 
@@ -98,36 +128,9 @@ const SubjectPage = () => {
     topPerformer: "None"
   };
   
-  const [activeTab, setActiveTab] = useState("content");
+  const contentItems = mockContentBySubject[subjectId as keyof typeof mockContentBySubject] || [];
   
-  // Performance chart 
-  const performanceChart = (
-    <RechartsPrimitive.ResponsiveContainer width="100%" height={300}>
-      <RechartsPrimitive.LineChart
-        data={performanceData}
-        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-      >
-        <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
-        <RechartsPrimitive.XAxis dataKey="name" />
-        <RechartsPrimitive.YAxis />
-        <RechartsPrimitive.Tooltip />
-        <RechartsPrimitive.Legend />
-        <RechartsPrimitive.Line
-          type="monotone"
-          dataKey="avgScore"
-          name="Subject Average"
-          stroke="var(--color-avgScore)"
-          activeDot={{ r: 8 }}
-        />
-        <RechartsPrimitive.Line
-          type="monotone"
-          dataKey="classAvg"
-          name="Class Average"
-          stroke="var(--color-classAvg)"
-        />
-      </RechartsPrimitive.LineChart>
-    </RechartsPrimitive.ResponsiveContainer>
-  );
+  const [activeTab, setActiveTab] = useState("content");
   
   return (
     <div className="animate-fade-in">
@@ -197,21 +200,16 @@ const SubjectPage = () => {
       </div>
       
       <div className="mb-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>Performance Trend</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer
-              config={{
-                avgScore: { color: "hsl(var(--primary))" },
-                classAvg: { color: "hsl(var(--secondary))" }
-              }}
-            >
-              {performanceChart}
-            </ChartContainer>
-          </CardContent>
-        </Card>
+        <PerformanceChart
+          title="Performance Trend"
+          data={performanceData}
+          xAxisKey="name"
+          lines={[
+            { dataKey: "avgScore", name: "Subject Average", colorKey: "avgScore" },
+            { dataKey: "classAvg", name: "Class Average", colorKey: "classAvg" }
+          ]}
+          height={280}
+        />
       </div>
       
       <Tabs defaultValue="content" className="mb-8">
@@ -228,31 +226,11 @@ const SubjectPage = () => {
         </TabsList>
         
         <TabsContent value="content" className="space-y-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-800">Subject Content</h2>
-            <Button asChild>
-              <Link to="/create">
-                <PlusCircle className="h-4 w-4 mr-1" />
-                Create New
-              </Link>
-            </Button>
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {mockContent.map((item) => (
-              <ContentCard
-                key={item.id}
-                id={item.id}
-                title={item.title}
-                type={item.type as "quiz" | "practice" | "test"}
-                status={item.status as "draft" | "published" | "scheduled"}
-                timeLimit={item.timeLimit}
-                questionCount={item.questionCount}
-                submissions={item.submissions}
-                dueDate={item.dueDate}
-              />
-            ))}
-          </div>
+          <ContentList 
+            title="Subject Content" 
+            content={contentItems} 
+            createLink={`/create?subject=${subjectId}`} 
+          />
         </TabsContent>
         
         <TabsContent value="students">
@@ -277,44 +255,7 @@ const SubjectPage = () => {
       </Tabs>
       
       <div className="dashboard-card">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">Recent Activity for {subject.name}</h2>
-        <div className="space-y-4">
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-              <Users className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="text-sm">
-                <span className="font-medium">5 new submissions</span> for <span className="text-teacher-primary">Basic Concepts Quiz</span>
-              </p>
-              <p className="text-xs text-gray-500 mt-1">2 hours ago</p>
-            </div>
-          </div>
-          
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
-              <BarChart className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="text-sm">
-                <span className="font-medium">Class average increased</span> by <span className="text-green-600">2.5%</span> this week
-              </p>
-              <p className="text-xs text-gray-500 mt-1">Yesterday</p>
-            </div>
-          </div>
-          
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
-              <BookOpen className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="text-sm">
-                <span className="font-medium">New content published</span> - <span className="text-teacher-primary">Practice Exercises Set 1</span>
-              </p>
-              <p className="text-xs text-gray-500 mt-1">3 days ago</p>
-            </div>
-          </div>
-        </div>
+        <RecentActivity activities={recentSubjectActivities} />
       </div>
     </div>
   );
