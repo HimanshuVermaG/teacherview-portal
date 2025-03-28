@@ -1,3 +1,4 @@
+
 import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -129,6 +130,36 @@ const StudentDetailPage = () => {
     parentContacts: []
   };
   
+  // Pre-render chart elements
+  const barChartElement = (
+    <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+      <RechartsPrimitive.BarChart
+        data={student.subjects}
+        layout="vertical"
+      >
+        <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
+        <RechartsPrimitive.XAxis type="number" />
+        <RechartsPrimitive.YAxis dataKey="name" type="category" />
+        <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
+        <RechartsPrimitive.Bar dataKey="score" fill="var(--color-score)" />
+      </RechartsPrimitive.BarChart>
+    </RechartsPrimitive.ResponsiveContainer>
+  );
+  
+  const lineChartElement = (
+    <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+      <RechartsPrimitive.LineChart
+        data={student.trends}
+      >
+        <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
+        <RechartsPrimitive.XAxis dataKey="month" />
+        <RechartsPrimitive.YAxis />
+        <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
+        <RechartsPrimitive.Line type="monotone" dataKey="score" stroke="var(--color-score)" strokeWidth={2} />
+      </RechartsPrimitive.LineChart>
+    </RechartsPrimitive.ResponsiveContainer>
+  );
+  
   return (
     <div className="animate-fade-in">
       <div className="mb-8">
@@ -220,20 +251,7 @@ const StudentDetailPage = () => {
                 score: { color: "hsl(var(--primary))" }
               }}
             >
-              {() => (
-                <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
-                  <RechartsPrimitive.BarChart
-                    data={student.subjects}
-                    layout="vertical"
-                  >
-                    <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
-                    <RechartsPrimitive.XAxis type="number" />
-                    <RechartsPrimitive.YAxis dataKey="name" type="category" />
-                    <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
-                    <RechartsPrimitive.Bar dataKey="score" fill="var(--color-score)" />
-                  </RechartsPrimitive.BarChart>
-                </RechartsPrimitive.ResponsiveContainer>
-              )}
+              {barChartElement}
             </ChartContainer>
           </div>
         </Card>
@@ -259,19 +277,7 @@ const StudentDetailPage = () => {
                     score: { color: "hsl(var(--primary))" }
                   }}
                 >
-                  {() => (
-                    <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
-                      <RechartsPrimitive.LineChart
-                        data={student.trends}
-                      >
-                        <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
-                        <RechartsPrimitive.XAxis dataKey="month" />
-                        <RechartsPrimitive.YAxis />
-                        <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
-                        <RechartsPrimitive.Line type="monotone" dataKey="score" stroke="var(--color-score)" strokeWidth={2} />
-                      </RechartsPrimitive.LineChart>
-                    </RechartsPrimitive.ResponsiveContainer>
-                  )}
+                  {lineChartElement}
                 </ChartContainer>
               </div>
             </Card>
