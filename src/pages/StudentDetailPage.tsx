@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BarChart as Chart } from "@/components/ui/chart";
+import { ChartContainer as Chart } from "@/components/ui/chart";
 import { ArrowLeft, Mail, Phone, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -174,16 +174,25 @@ const StudentDetailPage = () => {
           <h3 className="text-lg font-semibold mb-4">Subject Performance</h3>
           <div className="h-48">
             <Chart 
-              type="bar"
-              data={student.subjects}
-              dataKey="score"
-              categories={["score"]}
-              index="name"
-              colors={["hsl(var(--primary))"]}
-              valueFormatter={(value) => `${value}%`}
-              showLegend={false}
-              layout="vertical"
-            />
+              config={{
+                score: { color: "hsl(var(--primary))" }
+              }}
+            >
+              {({ ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip }) => (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={student.subjects}
+                    layout="vertical"
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis type="number" />
+                    <YAxis dataKey="name" type="category" />
+                    <Tooltip formatter={(value) => `${value}%`} />
+                    <Bar dataKey="score" fill="var(--color-score)" />
+                  </BarChart>
+                </ResponsiveContainer>
+              )}
+            </Chart>
           </div>
         </Card>
       </div>
@@ -201,15 +210,24 @@ const StudentDetailPage = () => {
               <h3 className="text-lg font-semibold mb-4">Performance Trend</h3>
               <div className="h-64">
                 <Chart 
-                  type="line"
-                  data={student.trends}
-                  dataKey="score"
-                  categories={["score"]}
-                  index="month"
-                  colors={["hsl(var(--primary))"]}
-                  valueFormatter={(value) => `${value}%`}
-                  showLegend={false}
-                />
+                  config={{
+                    score: { color: "hsl(var(--primary))" }
+                  }}
+                >
+                  {({ ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip }) => (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart
+                        data={student.trends}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="month" />
+                        <YAxis />
+                        <Tooltip formatter={(value) => `${value}%`} />
+                        <Line type="monotone" dataKey="score" stroke="var(--color-score)" strokeWidth={2} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  )}
+                </Chart>
               </div>
             </Card>
             

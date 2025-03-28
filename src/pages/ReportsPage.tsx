@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart, Search, UserPlus } from "lucide-react";
 import StudentReportCard from "@/components/reports/StudentReportCard";
-import { BarChart as Chart } from "@/components/ui/chart";
+import { ChartContainer as Chart } from "@/components/ui/chart";
 
 // Mock student data
 const studentsData = [
@@ -198,15 +197,22 @@ const ReportsPage = () => {
               <h3 className="text-lg font-semibold mb-4">Performance Distribution</h3>
               <div className="h-64">
                 <Chart 
-                  type="bar"
-                  data={classPerformanceData}
-                  dataKey="students"
-                  categories={["students"]}
-                  index="name"
-                  colors={["hsl(var(--primary))"]}
-                  valueFormatter={(value) => `${value} students`}
-                  showLegend={false}
-                />
+                  config={{
+                    students: { color: "hsl(var(--primary))" }
+                  }}
+                >
+                  {({ ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip }) => (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={classPerformanceData}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <Tooltip formatter={(value) => [`${value} students`, 'Students']} />
+                        <Bar dataKey="students" fill="var(--color-students)" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  )}
+                </Chart>
               </div>
             </div>
             
@@ -214,18 +220,38 @@ const ReportsPage = () => {
               <h3 className="text-lg font-semibold mb-4">Quiz Completion Rate</h3>
               <div className="h-64">
                 <Chart 
-                  type="pie"
-                  data={[
-                    { name: "Completed", value: 82 },
-                    { name: "In Progress", value: 12 },
-                    { name: "Not Started", value: 6 }
-                  ]}
-                  dataKey="value"
-                  categories={["value"]}
-                  index="name"
-                  valueFormatter={(value) => `${value}%`}
-                  colors={["hsl(var(--primary))", "hsl(var(--secondary))", "hsl(var(--accent))"]}
-                />
+                  config={{
+                    completed: { color: "hsl(var(--primary))" },
+                    inProgress: { color: "hsl(var(--secondary))" },
+                    notStarted: { color: "hsl(var(--accent))" }
+                  }}
+                >
+                  {({ ResponsiveContainer, PieChart, Pie, Cell, Legend, Tooltip }) => (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={[
+                            { name: "Completed", value: 82, dataKey: "completed" },
+                            { name: "In Progress", value: 12, dataKey: "inProgress" },
+                            { name: "Not Started", value: 6, dataKey: "notStarted" }
+                          ]}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          outerRadius={80}
+                          fill="#8884d8"
+                          dataKey="value"
+                        >
+                          <Cell fill="var(--color-completed)" />
+                          <Cell fill="var(--color-inProgress)" />
+                          <Cell fill="var(--color-notStarted)" />
+                        </Pie>
+                        <Tooltip formatter={(value) => `${value}%`} />
+                        <Legend />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  )}
+                </Chart>
               </div>
             </div>
             
@@ -233,22 +259,31 @@ const ReportsPage = () => {
               <h3 className="text-lg font-semibold mb-4">Performance Trend</h3>
               <div className="h-64">
                 <Chart 
-                  type="line"
-                  data={[
-                    { month: "Jan", avgScore: 72 },
-                    { month: "Feb", avgScore: 74 },
-                    { month: "Mar", avgScore: 76 },
-                    { month: "Apr", avgScore: 75 },
-                    { month: "May", avgScore: 78 },
-                    { month: "Jun", avgScore: 82 }
-                  ]}
-                  dataKey="avgScore"
-                  categories={["avgScore"]}
-                  index="month"
-                  colors={["hsl(var(--primary))"]}
-                  valueFormatter={(value) => `${value}%`}
-                  showLegend={false}
-                />
+                  config={{
+                    avgScore: { color: "hsl(var(--primary))" }
+                  }}
+                >
+                  {({ ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip }) => (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart
+                        data={[
+                          { month: "Jan", avgScore: 72 },
+                          { month: "Feb", avgScore: 74 },
+                          { month: "Mar", avgScore: 76 },
+                          { month: "Apr", avgScore: 75 },
+                          { month: "May", avgScore: 78 },
+                          { month: "Jun", avgScore: 82 }
+                        ]}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="month" />
+                        <YAxis />
+                        <Tooltip formatter={(value) => `${value}%`} />
+                        <Line type="monotone" dataKey="avgScore" stroke="var(--color-avgScore)" strokeWidth={2} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  )}
+                </Chart>
               </div>
             </div>
           </div>
@@ -296,15 +331,22 @@ const ReportsPage = () => {
               <h3 className="text-lg font-semibold mb-4">Subject Performance Comparison</h3>
               <div className="h-64">
                 <Chart 
-                  type="bar"
-                  data={subjectPerformanceData}
-                  dataKey="score"
-                  categories={["score"]}
-                  index="name"
-                  colors={["hsl(var(--primary))"]}
-                  valueFormatter={(value) => `${value}%`}
-                  showLegend={false}
-                />
+                  config={{
+                    score: { color: "hsl(var(--primary))" }
+                  }}
+                >
+                  {({ ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip }) => (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={subjectPerformanceData}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <Tooltip formatter={(value) => `${value}%`} />
+                        <Bar dataKey="score" fill="var(--color-score)" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  )}
+                </Chart>
               </div>
             </div>
             
@@ -312,20 +354,30 @@ const ReportsPage = () => {
               <h3 className="text-lg font-semibold mb-4">Concept Mastery</h3>
               <div className="h-64">
                 <Chart 
-                  type="radar"
-                  data={[
-                    { concept: "Algebra", score: 85 },
-                    { concept: "Geometry", score: 72 },
-                    { concept: "Calculus", score: 68 },
-                    { concept: "Statistics", score: 78 },
-                    { concept: "Trigonometry", score: 65 }
-                  ]}
-                  dataKey="score"
-                  categories={["score"]}
-                  index="concept"
-                  colors={["hsl(var(--primary))"]}
-                  valueFormatter={(value) => `${value}%`}
-                />
+                  config={{
+                    score: { color: "hsl(var(--primary))" }
+                  }}
+                >
+                  {({ ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Tooltip }) => (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <RadarChart
+                        data={[
+                          { concept: "Algebra", score: 85 },
+                          { concept: "Geometry", score: 72 },
+                          { concept: "Calculus", score: 68 },
+                          { concept: "Statistics", score: 78 },
+                          { concept: "Trigonometry", score: 65 }
+                        ]}
+                      >
+                        <PolarGrid />
+                        <PolarAngleAxis dataKey="concept" />
+                        <PolarRadiusAxis />
+                        <Radar dataKey="score" stroke="var(--color-score)" fill="var(--color-score)" fillOpacity={0.6} />
+                        <Tooltip formatter={(value) => `${value}%`} />
+                      </RadarChart>
+                    </ResponsiveContainer>
+                  )}
+                </Chart>
               </div>
             </div>
             
@@ -333,23 +385,33 @@ const ReportsPage = () => {
               <h3 className="text-lg font-semibold mb-4">Topic Performance</h3>
               <div className="h-64">
                 <Chart 
-                  type="bar"
-                  data={[
-                    { topic: "Equations", average: 82, highest: 95 },
-                    { topic: "Fractions", average: 75, highest: 92 },
-                    { topic: "Functions", average: 68, highest: 88 },
-                    { topic: "Graphing", average: 72, highest: 90 },
-                    { topic: "Word Problems", average: 65, highest: 85 }
-                  ]}
-                  dataKey="average"
-                  categories={["average", "highest"]}
-                  index="topic"
-                  colors={["hsl(var(--primary))", "hsl(var(--accent))"]}
-                  valueFormatter={(value) => `${value}%`}
-                  legend={{
-                    position: "top"
+                  config={{
+                    average: { color: "hsl(var(--primary))" },
+                    highest: { color: "hsl(var(--accent))" }
                   }}
-                />
+                >
+                  {({ ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend }) => (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={[
+                          { topic: "Equations", average: 82, highest: 95 },
+                          { topic: "Fractions", average: 75, highest: 92 },
+                          { topic: "Functions", average: 68, highest: 88 },
+                          { topic: "Graphing", average: 72, highest: 90 },
+                          { topic: "Word Problems", average: 65, highest: 85 }
+                        ]}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="topic" />
+                        <YAxis />
+                        <Tooltip formatter={(value) => `${value}%`} />
+                        <Legend />
+                        <Bar dataKey="average" fill="var(--color-average)" />
+                        <Bar dataKey="highest" fill="var(--color-highest)" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  )}
+                </Chart>
               </div>
             </div>
           </div>
