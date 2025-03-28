@@ -8,12 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-// Mock data for demonstration
+// Mock data for demonstration - Updated for 6th to 10th classes
 const classes = [
-  { id: "math-101", name: "Math 101", subject: "Mathematics", studentCount: 32, activeContent: 5, color: "blue" },
-  { id: "science-101", name: "Science 101", subject: "Science", studentCount: 28, activeContent: 7, color: "green" },
-  { id: "history-101", name: "History 101", subject: "History", studentCount: 30, activeContent: 3, color: "purple" },
-  { id: "english-101", name: "English 101", subject: "English", studentCount: 31, activeContent: 6, color: "orange" },
+  { id: "class-6", name: "Class 6", subject: "All Subjects", studentCount: 32, activeContent: 5, color: "blue" },
+  { id: "class-7", name: "Class 7", subject: "All Subjects", studentCount: 28, activeContent: 7, color: "green" },
+  { id: "class-8", name: "Class 8", subject: "All Subjects", studentCount: 30, activeContent: 3, color: "purple" },
+  { id: "class-9", name: "Class 9", subject: "All Subjects", studentCount: 31, activeContent: 6, color: "orange" },
+  { id: "class-10", name: "Class 10", subject: "All Subjects", studentCount: 35, activeContent: 8, color: "red" },
 ];
 
 // Mock data for subject performance
@@ -24,7 +25,7 @@ const subjectPerformanceData = [
   { name: "English", avgScore: 85, studentCount: 105, passingRate: 96, topPerformer: "Taylor S." }
 ];
 
-// Mock data for recent activity
+// Mock data for recent activity - Updated with links to relevant pages
 const recentActivities = [
   { 
     id: '1',
@@ -33,10 +34,10 @@ const recentActivities = [
     iconBg: 'bg-blue-100',
     iconColor: 'text-blue-600',
     title: '5 new submissions',
-    content: 'in Math 101 - Algebra Quiz',
+    content: 'in Class 6 - Mathematics Quiz',
     time: '2 hours ago',
     actionText: 'Review submissions',
-    actionLink: '/review/math-101/quiz-1'
+    actionLink: '/class/class-6/subject/math-101'
   },
   { 
     id: '2',
@@ -45,10 +46,10 @@ const recentActivities = [
     iconBg: 'bg-green-100',
     iconColor: 'text-green-600',
     title: 'New quiz created',
-    content: 'Science 101 - Forces and Motion',
+    content: 'Class 7 - Science Forces and Motion',
     time: 'Yesterday',
     actionText: 'View quiz',
-    actionLink: '/content/science-101/quiz-2'
+    actionLink: '/class/class-7/subject/science-101'
   },
   { 
     id: '3',
@@ -57,10 +58,10 @@ const recentActivities = [
     iconBg: 'bg-purple-100',
     iconColor: 'text-purple-600',
     title: 'Performance report ready',
-    content: 'for History 101',
+    content: 'for Class 8 History',
     time: '2 days ago',
     actionText: 'View report',
-    actionLink: '/reports?class=history-101'
+    actionLink: '/reports?class=class-8'
   },
   { 
     id: '4',
@@ -72,7 +73,7 @@ const recentActivities = [
     content: '8 assignments pending review',
     time: '3 days ago',
     actionText: 'View pending',
-    actionLink: '/pending-reviews'
+    actionLink: '/activity'
   },
 ];
 
@@ -104,13 +105,13 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
         <StatCard 
           title="Total Students" 
-          value="121" 
+          value="156" 
           icon={Users} 
           description="Across all classes"
         />
         <StatCard 
           title="Active Content" 
-          value="21" 
+          value="29" 
           icon={BookOpen} 
           description="Quizzes, tests, practice sets"
         />
@@ -173,7 +174,7 @@ const Dashboard = () => {
               </Link>
             </Button>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {classes.map((classItem) => (
               <ClassCard
                 key={classItem.id}
@@ -205,15 +206,17 @@ const Dashboard = () => {
                     <div className={`w-9 h-9 mt-0.5 rounded-full ${activity.iconBg} flex items-center justify-center ${activity.iconColor} shrink-0`}>
                       <activity.icon className="w-4 h-4" />
                     </div>
-                    <div className="space-y-1">
+                    <div className="space-y-1 flex-1">
                       <p className="text-sm">
                         <span className="font-medium">{activity.title}</span> {activity.content && <span className="text-teacher-primary">{activity.content}</span>}
                       </p>
                       <p className="text-xs text-gray-500">{activity.time}</p>
-                      <Link to={activity.actionLink} className="inline-flex items-center text-xs font-medium text-teacher-primary opacity-0 group-hover:opacity-100 transition-opacity hover:underline">
-                        {activity.actionText}
-                        <ArrowRight className="h-3 w-3 ml-1" />
-                      </Link>
+                      <div className="flex gap-2">
+                        <Link to={activity.actionLink} className="inline-flex items-center text-xs font-medium text-teacher-primary hover:underline">
+                          {activity.actionText}
+                          <ArrowRight className="h-3 w-3 ml-1" />
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 ))}
