@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +7,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart, Search, UserPlus } from "lucide-react";
 import StudentReportCard from "@/components/reports/StudentReportCard";
-import { ChartContainer as Chart } from "@/components/ui/chart";
+import { ChartContainer } from "@/components/ui/chart";
+import * as RechartsPrimitive from "recharts";
+import { Link } from "react-router-dom";
 
 // Mock student data
 const studentsData = [
@@ -36,6 +39,125 @@ const subjectPerformanceData = [
   { name: "History", score: 75 },
   { name: "English", score: 85 },
 ];
+
+// Render function for the bar chart
+const renderBarChart = () => (
+  <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+    <RechartsPrimitive.BarChart data={classPerformanceData}>
+      <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
+      <RechartsPrimitive.XAxis dataKey="name" />
+      <RechartsPrimitive.YAxis />
+      <RechartsPrimitive.Tooltip formatter={(value) => [`${value} students`, 'Students']} />
+      <RechartsPrimitive.Bar dataKey="students" fill="var(--color-students)" />
+    </RechartsPrimitive.BarChart>
+  </RechartsPrimitive.ResponsiveContainer>
+);
+
+// Render function for the pie chart
+const renderPieChart = () => (
+  <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+    <RechartsPrimitive.PieChart>
+      <RechartsPrimitive.Pie
+        data={[
+          { name: "Completed", value: 82, dataKey: "completed" },
+          { name: "In Progress", value: 12, dataKey: "inProgress" },
+          { name: "Not Started", value: 6, dataKey: "notStarted" }
+        ]}
+        cx="50%"
+        cy="50%"
+        labelLine={false}
+        outerRadius={80}
+        fill="#8884d8"
+        dataKey="value"
+      >
+        <RechartsPrimitive.Cell fill="var(--color-completed)" />
+        <RechartsPrimitive.Cell fill="var(--color-inProgress)" />
+        <RechartsPrimitive.Cell fill="var(--color-notStarted)" />
+      </RechartsPrimitive.Pie>
+      <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
+      <RechartsPrimitive.Legend />
+    </RechartsPrimitive.PieChart>
+  </RechartsPrimitive.ResponsiveContainer>
+);
+
+// Render function for the line chart
+const renderTrendLineChart = () => (
+  <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+    <RechartsPrimitive.LineChart
+      data={[
+        { month: "Jan", avgScore: 72 },
+        { month: "Feb", avgScore: 74 },
+        { month: "Mar", avgScore: 76 },
+        { month: "Apr", avgScore: 75 },
+        { month: "May", avgScore: 78 },
+        { month: "Jun", avgScore: 82 }
+      ]}
+    >
+      <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
+      <RechartsPrimitive.XAxis dataKey="month" />
+      <RechartsPrimitive.YAxis />
+      <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
+      <RechartsPrimitive.Line type="monotone" dataKey="avgScore" stroke="var(--color-avgScore)" strokeWidth={2} />
+    </RechartsPrimitive.LineChart>
+  </RechartsPrimitive.ResponsiveContainer>
+);
+
+// Render function for the subject bar chart
+const renderSubjectBarChart = () => (
+  <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+    <RechartsPrimitive.BarChart data={subjectPerformanceData}>
+      <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
+      <RechartsPrimitive.XAxis dataKey="name" />
+      <RechartsPrimitive.YAxis />
+      <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
+      <RechartsPrimitive.Bar dataKey="score" fill="var(--color-score)" />
+    </RechartsPrimitive.BarChart>
+  </RechartsPrimitive.ResponsiveContainer>
+);
+
+// Render function for the radar chart
+const renderRadarChart = () => (
+  <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+    <RechartsPrimitive.RadarChart
+      data={[
+        { concept: "Algebra", score: 85 },
+        { concept: "Geometry", score: 72 },
+        { concept: "Calculus", score: 68 },
+        { concept: "Statistics", score: 78 },
+        { concept: "Trigonometry", score: 65 }
+      ]}
+    >
+      <RechartsPrimitive.PolarGrid />
+      <RechartsPrimitive.PolarAngleAxis dataKey="concept" />
+      <RechartsPrimitive.PolarRadiusAxis />
+      <RechartsPrimitive.Radar dataKey="score" stroke="var(--color-score)" fill="var(--color-score)" fillOpacity={0.6} />
+      <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
+    </RechartsPrimitive.RadarChart>
+  </RechartsPrimitive.ResponsiveContainer>
+);
+
+// Render function for the topic bar chart
+const renderTopicBarChart = () => (
+  <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+    <RechartsPrimitive.BarChart
+      data={[
+        { topic: "Equations", average: 82, highest: 95 },
+        { topic: "Fractions", average: 75, highest: 92 },
+        { topic: "Functions", average: 68, highest: 88 },
+        { topic: "Graphing", average: 72, highest: 90 },
+        { topic: "Word Problems", average: 65, highest: 85 }
+      ]}
+    >
+      <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
+      <RechartsPrimitive.XAxis dataKey="topic" />
+      <RechartsPrimitive.YAxis />
+      <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
+      <RechartsPrimitive.Legend />
+      <RechartsPrimitive.Bar dataKey="average" fill="var(--color-average)" />
+      <RechartsPrimitive.Bar dataKey="highest" fill="var(--color-highest)" />
+    </RechartsPrimitive.BarChart>
+  </RechartsPrimitive.ResponsiveContainer>
+);
 
 const ReportsPage = () => {
   const [sortBy, setSortBy] = useState("name");
@@ -137,9 +259,11 @@ const ReportsPage = () => {
                 Student List {searchQuery && <span className="font-normal text-sm">({sortedStudents.length} results)</span>}
               </h2>
             </div>
-            <Button>
-              <UserPlus className="h-4 w-4 mr-1" />
-              Add Student
+            <Button asChild>
+              <Link to="/manage-students">
+                <UserPlus className="h-4 w-4 mr-1" />
+                Manage Students
+              </Link>
             </Button>
           </div>
           
@@ -196,94 +320,41 @@ const ReportsPage = () => {
             <div className="dashboard-card">
               <h3 className="text-lg font-semibold mb-4">Performance Distribution</h3>
               <div className="h-64">
-                <Chart 
+                <ChartContainer 
                   config={{
                     students: { color: "hsl(var(--primary))" }
                   }}
                 >
-                  {({ ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip }) => (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={classPerformanceData}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <Tooltip formatter={(value) => [`${value} students`, 'Students']} />
-                        <Bar dataKey="students" fill="var(--color-students)" />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  )}
-                </Chart>
+                  {renderBarChart}
+                </ChartContainer>
               </div>
             </div>
             
             <div className="dashboard-card">
               <h3 className="text-lg font-semibold mb-4">Quiz Completion Rate</h3>
               <div className="h-64">
-                <Chart 
+                <ChartContainer 
                   config={{
                     completed: { color: "hsl(var(--primary))" },
                     inProgress: { color: "hsl(var(--secondary))" },
                     notStarted: { color: "hsl(var(--accent))" }
                   }}
                 >
-                  {({ ResponsiveContainer, PieChart, Pie, Cell, Legend, Tooltip }) => (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={[
-                            { name: "Completed", value: 82, dataKey: "completed" },
-                            { name: "In Progress", value: 12, dataKey: "inProgress" },
-                            { name: "Not Started", value: 6, dataKey: "notStarted" }
-                          ]}
-                          cx="50%"
-                          cy="50%"
-                          labelLine={false}
-                          outerRadius={80}
-                          fill="#8884d8"
-                          dataKey="value"
-                        >
-                          <Cell fill="var(--color-completed)" />
-                          <Cell fill="var(--color-inProgress)" />
-                          <Cell fill="var(--color-notStarted)" />
-                        </Pie>
-                        <Tooltip formatter={(value) => `${value}%`} />
-                        <Legend />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  )}
-                </Chart>
+                  {renderPieChart}
+                </ChartContainer>
               </div>
             </div>
             
             <div className="dashboard-card lg:col-span-2">
               <h3 className="text-lg font-semibold mb-4">Performance Trend</h3>
               <div className="h-64">
-                <Chart 
+                <ChartContainer 
                   config={{
                     avgScore: { color: "hsl(var(--primary))" }
                   }}
                 >
-                  {({ ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip }) => (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart
-                        data={[
-                          { month: "Jan", avgScore: 72 },
-                          { month: "Feb", avgScore: 74 },
-                          { month: "Mar", avgScore: 76 },
-                          { month: "Apr", avgScore: 75 },
-                          { month: "May", avgScore: 78 },
-                          { month: "Jun", avgScore: 82 }
-                        ]}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="month" />
-                        <YAxis />
-                        <Tooltip formatter={(value) => `${value}%`} />
-                        <Line type="monotone" dataKey="avgScore" stroke="var(--color-avgScore)" strokeWidth={2} />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  )}
-                </Chart>
+                  {renderTrendLineChart}
+                </ChartContainer>
               </div>
             </div>
           </div>
@@ -330,88 +401,40 @@ const ReportsPage = () => {
             <div className="dashboard-card">
               <h3 className="text-lg font-semibold mb-4">Subject Performance Comparison</h3>
               <div className="h-64">
-                <Chart 
+                <ChartContainer 
                   config={{
                     score: { color: "hsl(var(--primary))" }
                   }}
                 >
-                  {({ ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip }) => (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={subjectPerformanceData}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <Tooltip formatter={(value) => `${value}%`} />
-                        <Bar dataKey="score" fill="var(--color-score)" />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  )}
-                </Chart>
+                  {renderSubjectBarChart}
+                </ChartContainer>
               </div>
             </div>
             
             <div className="dashboard-card">
               <h3 className="text-lg font-semibold mb-4">Concept Mastery</h3>
               <div className="h-64">
-                <Chart 
+                <ChartContainer 
                   config={{
                     score: { color: "hsl(var(--primary))" }
                   }}
                 >
-                  {({ ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Tooltip }) => (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <RadarChart
-                        data={[
-                          { concept: "Algebra", score: 85 },
-                          { concept: "Geometry", score: 72 },
-                          { concept: "Calculus", score: 68 },
-                          { concept: "Statistics", score: 78 },
-                          { concept: "Trigonometry", score: 65 }
-                        ]}
-                      >
-                        <PolarGrid />
-                        <PolarAngleAxis dataKey="concept" />
-                        <PolarRadiusAxis />
-                        <Radar dataKey="score" stroke="var(--color-score)" fill="var(--color-score)" fillOpacity={0.6} />
-                        <Tooltip formatter={(value) => `${value}%`} />
-                      </RadarChart>
-                    </ResponsiveContainer>
-                  )}
-                </Chart>
+                  {renderRadarChart}
+                </ChartContainer>
               </div>
             </div>
             
             <div className="dashboard-card lg:col-span-2">
               <h3 className="text-lg font-semibold mb-4">Topic Performance</h3>
               <div className="h-64">
-                <Chart 
+                <ChartContainer 
                   config={{
                     average: { color: "hsl(var(--primary))" },
                     highest: { color: "hsl(var(--accent))" }
                   }}
                 >
-                  {({ ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend }) => (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={[
-                          { topic: "Equations", average: 82, highest: 95 },
-                          { topic: "Fractions", average: 75, highest: 92 },
-                          { topic: "Functions", average: 68, highest: 88 },
-                          { topic: "Graphing", average: 72, highest: 90 },
-                          { topic: "Word Problems", average: 65, highest: 85 }
-                        ]}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="topic" />
-                        <YAxis />
-                        <Tooltip formatter={(value) => `${value}%`} />
-                        <Legend />
-                        <Bar dataKey="average" fill="var(--color-average)" />
-                        <Bar dataKey="highest" fill="var(--color-highest)" />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  )}
-                </Chart>
+                  {renderTopicBarChart}
+                </ChartContainer>
               </div>
             </div>
           </div>

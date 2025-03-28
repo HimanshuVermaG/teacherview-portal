@@ -9,6 +9,7 @@ import ClassPage from "./pages/ClassPage";
 import CreateContentPage from "./pages/CreateContentPage";
 import ReportsPage from "./pages/ReportsPage";
 import StudentDetailPage from "./pages/StudentDetailPage";
+import ManageStudentsPage from "./pages/ManageStudentsPage";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/layout/Layout";
 
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/create" element={<CreateContentPage />} />
             <Route path="/reports" element={<ReportsPage />} />
             <Route path="/student/:studentId" element={<StudentDetailPage />} />
+            <Route path="/manage-students" element={<ManageStudentsPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

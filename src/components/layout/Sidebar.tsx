@@ -54,6 +54,12 @@ const Sidebar = () => {
               icon={<BarChart className="h-5 w-5" />} 
               active={isActive("/reports")}
             />
+            <NavItem 
+              to="/manage-students" 
+              label="Manage Students" 
+              icon={<Users className="h-5 w-5" />} 
+              active={isActive("/manage-students")}
+            />
           </nav>
         </div>
         
@@ -89,12 +95,6 @@ const Sidebar = () => {
               label="Calendar" 
               icon={<Calendar className="h-5 w-5" />} 
               active={isActive("/calendar")}
-            />
-            <NavItem 
-              to="/students" 
-              label="Students" 
-              icon={<Users className="h-5 w-5" />} 
-              active={isActive("/students")}
             />
             <NavItem 
               to="/settings" 

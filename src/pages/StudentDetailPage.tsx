@@ -3,9 +3,10 @@ import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ChartContainer as Chart } from "@/components/ui/chart";
+import { ChartContainer } from "@/components/ui/chart";
 import { ArrowLeft, Mail, Phone, Download } from "lucide-react";
 import { Link } from "react-router-dom";
+import * as RechartsPrimitive from "recharts";
 
 // Mock student data
 const studentsData = {
@@ -38,6 +39,23 @@ const studentsData = {
       { month: "Apr", score: 83 },
       { month: "May", score: 85 },
       { month: "Jun", score: 87 }
+    ],
+    // Additional data for expanded analysis
+    behavioralNotes: [
+      { date: "2023-05-15", note: "Shows excellent leadership in group projects" },
+      { date: "2023-04-10", note: "Actively participates in class discussions" },
+      { date: "2023-03-22", note: "May need additional support with time management" }
+    ],
+    testScores: [
+      { test: "Midterm Exam", score: 88, date: "2023-04-15" },
+      { test: "Chapter 4 Quiz", score: 92, date: "2023-03-20" },
+      { test: "Research Project", score: 85, date: "2023-03-05" },
+      { test: "Pop Quiz", score: 79, date: "2023-02-18" }
+    ],
+    learningStyle: "Visual",
+    parentContacts: [
+      { date: "2023-05-10", type: "Email", notes: "Discussed progress in Science project" },
+      { date: "2023-04-05", type: "Phone Call", notes: "Parent-teacher conference followup" }
     ]
   },
   "s2": {
@@ -69,9 +87,57 @@ const studentsData = {
       { month: "Apr", score: 72 },
       { month: "May", score: 74 },
       { month: "Jun", score: 72 }
+    ],
+    // Additional data for expanded analysis
+    behavioralNotes: [
+      { date: "2023-05-12", note: "Struggles with maintaining focus during longer sessions" },
+      { date: "2023-04-08", note: "Works well in small group settings" },
+      { date: "2023-03-15", note: "Shows improvement in organizational skills" }
+    ],
+    testScores: [
+      { test: "Midterm Exam", score: 72, date: "2023-04-15" },
+      { test: "Chapter 4 Quiz", score: 68, date: "2023-03-20" },
+      { test: "Research Project", score: 77, date: "2023-03-05" },
+      { test: "Pop Quiz", score: 65, date: "2023-02-18" }
+    ],
+    learningStyle: "Kinesthetic",
+    parentContacts: [
+      { date: "2023-05-05", type: "Meeting", notes: "Discussed strategies for improving math scores" },
+      { date: "2023-03-20", type: "Email", notes: "Shared resources for additional practice" }
     ]
   }
 };
+
+// Render function for bar chart
+const renderBarChart = (studentData: any) => (
+  <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+    <RechartsPrimitive.BarChart
+      data={studentData.subjects}
+      layout="vertical"
+    >
+      <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
+      <RechartsPrimitive.XAxis type="number" />
+      <RechartsPrimitive.YAxis dataKey="name" type="category" />
+      <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
+      <RechartsPrimitive.Bar dataKey="score" fill="var(--color-score)" />
+    </RechartsPrimitive.BarChart>
+  </RechartsPrimitive.ResponsiveContainer>
+);
+
+// Render function for line chart
+const renderLineChart = (studentData: any) => (
+  <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+    <RechartsPrimitive.LineChart
+      data={studentData.trends}
+    >
+      <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
+      <RechartsPrimitive.XAxis dataKey="month" />
+      <RechartsPrimitive.YAxis />
+      <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
+      <RechartsPrimitive.Line type="monotone" dataKey="score" stroke="var(--color-score)" strokeWidth={2} />
+    </RechartsPrimitive.LineChart>
+  </RechartsPrimitive.ResponsiveContainer>
+);
 
 const StudentDetailPage = () => {
   const { studentId } = useParams<{ studentId: string }>();
@@ -88,7 +154,11 @@ const StudentDetailPage = () => {
     attendance: 0,
     subjects: [],
     recentActivities: [],
-    trends: []
+    trends: [],
+    behavioralNotes: [],
+    testScores: [],
+    learningStyle: "N/A",
+    parentContacts: []
   };
   
   return (
@@ -145,6 +215,10 @@ const StudentDetailPage = () => {
               <span className="text-gray-500">Attendance:</span>
               <span className="font-medium">{student.attendance}%</span>
             </div>
+            <div className="grid grid-cols-[100px_1fr]">
+              <span className="text-gray-500">Learning:</span>
+              <span className="font-medium">{student.learningStyle}</span>
+            </div>
           </div>
         </Card>
         
@@ -173,26 +247,13 @@ const StudentDetailPage = () => {
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-4">Subject Performance</h3>
           <div className="h-48">
-            <Chart 
+            <ChartContainer 
               config={{
                 score: { color: "hsl(var(--primary))" }
               }}
             >
-              {({ ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip }) => (
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={student.subjects}
-                    layout="vertical"
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" />
-                    <YAxis dataKey="name" type="category" />
-                    <Tooltip formatter={(value) => `${value}%`} />
-                    <Bar dataKey="score" fill="var(--color-score)" />
-                  </BarChart>
-                </ResponsiveContainer>
-              )}
-            </Chart>
+              {() => renderBarChart(student)}
+            </ChartContainer>
           </div>
         </Card>
       </div>
@@ -202,6 +263,9 @@ const StudentDetailPage = () => {
           <TabsTrigger value="performance">Performance Analysis</TabsTrigger>
           <TabsTrigger value="activities">Recent Activities</TabsTrigger>
           <TabsTrigger value="recommendations">Recommendations</TabsTrigger>
+          <TabsTrigger value="notes">Behavioral Notes</TabsTrigger>
+          <TabsTrigger value="tests">Test History</TabsTrigger>
+          <TabsTrigger value="parent">Parent Communication</TabsTrigger>
         </TabsList>
         
         <TabsContent value="performance">
@@ -209,25 +273,13 @@ const StudentDetailPage = () => {
             <Card className="p-6">
               <h3 className="text-lg font-semibold mb-4">Performance Trend</h3>
               <div className="h-64">
-                <Chart 
+                <ChartContainer 
                   config={{
                     score: { color: "hsl(var(--primary))" }
                   }}
                 >
-                  {({ ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip }) => (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart
-                        data={student.trends}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="month" />
-                        <YAxis />
-                        <Tooltip formatter={(value) => `${value}%`} />
-                        <Line type="monotone" dataKey="score" stroke="var(--color-score)" strokeWidth={2} />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  )}
-                </Chart>
+                  {() => renderLineChart(student)}
+                </ChartContainer>
               </div>
             </Card>
             
@@ -339,6 +391,71 @@ const StudentDetailPage = () => {
                   <li>Competitive math challenges for advanced problem solving</li>
                 </ul>
               </div>
+            </div>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="notes">
+          <Card className="p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">Behavioral Notes</h3>
+              <Button variant="outline" size="sm">Add Note</Button>
+            </div>
+            <div className="space-y-4">
+              {student.behavioralNotes.map((note, index) => (
+                <div key={index} className="border-b pb-4 last:border-b-0 last:pb-0">
+                  <p className="text-sm text-gray-500 mb-1">{note.date}</p>
+                  <p className="text-gray-800">{note.note}</p>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="tests">
+          <Card className="p-6">
+            <h3 className="text-lg font-semibold mb-4">Test History</h3>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Name</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {student.testScores.map((test, index) => (
+                    <tr key={index}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{test.test}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{test.date}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{test.score}/100</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="parent">
+          <Card className="p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">Parent Communication</h3>
+              <Button variant="outline" size="sm">Log Contact</Button>
+            </div>
+            <div className="space-y-4">
+              {student.parentContacts.map((contact, index) => (
+                <div key={index} className="border-b pb-4 last:border-b-0 last:pb-0">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="font-medium">{contact.type}</h4>
+                      <p className="text-sm text-gray-500">{contact.date}</p>
+                    </div>
+                  </div>
+                  <p className="mt-2 text-gray-700">{contact.notes}</p>
+                </div>
+              ))}
             </div>
           </Card>
         </TabsContent>

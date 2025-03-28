@@ -3,6 +3,7 @@ import { BookOpen, PlusCircle, BarChart, Users, Clock } from "lucide-react";
 import ClassCard from "@/components/dashboard/ClassCard";
 import StatCard from "@/components/dashboard/StatCard";
 import QuickActionCard from "@/components/dashboard/QuickActionCard";
+import SubjectPerformanceCard from "@/components/dashboard/SubjectPerformanceCard";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -12,6 +13,14 @@ const classes = [
   { id: "science-101", name: "Science 101", subject: "Science", studentCount: 28, activeContent: 7, color: "green" },
   { id: "history-101", name: "History 101", subject: "History", studentCount: 30, activeContent: 3, color: "purple" },
   { id: "english-101", name: "English 101", subject: "English", studentCount: 31, activeContent: 6, color: "orange" },
+];
+
+// Mock data for subject performance
+const subjectPerformanceData = [
+  { name: "Mathematics", avgScore: 78, studentCount: 121, passingRate: 92, topPerformer: "Alex J." },
+  { name: "Science", avgScore: 82, studentCount: 98, passingRate: 94, topPerformer: "Jordan L." },
+  { name: "History", avgScore: 75, studentCount: 87, passingRate: 88, topPerformer: "Riley W." },
+  { name: "English", avgScore: 85, studentCount: 105, passingRate: 96, topPerformer: "Taylor S." }
 ];
 
 const Dashboard = () => {
@@ -74,8 +83,14 @@ const Dashboard = () => {
           title="Manage Students"
           description="Add or update student records"
           icon={Users}
-          to="/students"
+          to="/manage-students"
           color="accent"
+        />
+      </div>
+
+      <div className="mb-8">
+        <SubjectPerformanceCard 
+          data={subjectPerformanceData}
         />
       </div>
 
