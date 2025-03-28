@@ -325,7 +325,20 @@ const ReportsPage = () => {
                     students: { color: "hsl(var(--primary))" }
                   }}
                 >
-                  {renderBarChart}
+                  {() => (
+                    <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+                      <RechartsPrimitive.BarChart 
+                        data={classPerformanceData}
+                        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                      >
+                        <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
+                        <RechartsPrimitive.XAxis dataKey="name" />
+                        <RechartsPrimitive.YAxis />
+                        <RechartsPrimitive.Tooltip formatter={(value) => [`${value} students`, 'Students']} />
+                        <RechartsPrimitive.Bar dataKey="students" fill="var(--color-students)" />
+                      </RechartsPrimitive.BarChart>
+                    </RechartsPrimitive.ResponsiveContainer>
+                  )}
                 </ChartContainer>
               </div>
             </div>
@@ -340,7 +353,31 @@ const ReportsPage = () => {
                     notStarted: { color: "hsl(var(--accent))" }
                   }}
                 >
-                  {renderPieChart}
+                  {() => (
+                    <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+                      <RechartsPrimitive.PieChart>
+                        <RechartsPrimitive.Pie
+                          data={[
+                            { name: "Completed", value: 82, dataKey: "completed" },
+                            { name: "In Progress", value: 12, dataKey: "inProgress" },
+                            { name: "Not Started", value: 6, dataKey: "notStarted" }
+                          ]}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          outerRadius={80}
+                          fill="#8884d8"
+                          dataKey="value"
+                        >
+                          <RechartsPrimitive.Cell fill="var(--color-completed)" />
+                          <RechartsPrimitive.Cell fill="var(--color-inProgress)" />
+                          <RechartsPrimitive.Cell fill="var(--color-notStarted)" />
+                        </RechartsPrimitive.Pie>
+                        <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
+                        <RechartsPrimitive.Legend />
+                      </RechartsPrimitive.PieChart>
+                    </RechartsPrimitive.ResponsiveContainer>
+                  )}
                 </ChartContainer>
               </div>
             </div>
@@ -353,7 +390,26 @@ const ReportsPage = () => {
                     avgScore: { color: "hsl(var(--primary))" }
                   }}
                 >
-                  {renderTrendLineChart}
+                  {() => (
+                    <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+                      <RechartsPrimitive.LineChart
+                        data={[
+                          { month: "Jan", avgScore: 72 },
+                          { month: "Feb", avgScore: 74 },
+                          { month: "Mar", avgScore: 76 },
+                          { month: "Apr", avgScore: 75 },
+                          { month: "May", avgScore: 78 },
+                          { month: "Jun", avgScore: 82 }
+                        ]}
+                      >
+                        <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
+                        <RechartsPrimitive.XAxis dataKey="month" />
+                        <RechartsPrimitive.YAxis />
+                        <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
+                        <RechartsPrimitive.Line type="monotone" dataKey="avgScore" stroke="var(--color-avgScore)" strokeWidth={2} />
+                      </RechartsPrimitive.LineChart>
+                    </RechartsPrimitive.ResponsiveContainer>
+                  )}
                 </ChartContainer>
               </div>
             </div>
@@ -406,7 +462,17 @@ const ReportsPage = () => {
                     score: { color: "hsl(var(--primary))" }
                   }}
                 >
-                  {renderSubjectBarChart}
+                  {() => (
+                    <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+                      <RechartsPrimitive.BarChart data={subjectPerformanceData}>
+                        <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
+                        <RechartsPrimitive.XAxis dataKey="name" />
+                        <RechartsPrimitive.YAxis />
+                        <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
+                        <RechartsPrimitive.Bar dataKey="score" fill="var(--color-score)" />
+                      </RechartsPrimitive.BarChart>
+                    </RechartsPrimitive.ResponsiveContainer>
+                  )}
                 </ChartContainer>
               </div>
             </div>
@@ -419,7 +485,25 @@ const ReportsPage = () => {
                     score: { color: "hsl(var(--primary))" }
                   }}
                 >
-                  {renderRadarChart}
+                  {() => (
+                    <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+                      <RechartsPrimitive.RadarChart
+                        data={[
+                          { concept: "Algebra", score: 85 },
+                          { concept: "Geometry", score: 72 },
+                          { concept: "Calculus", score: 68 },
+                          { concept: "Statistics", score: 78 },
+                          { concept: "Trigonometry", score: 65 }
+                        ]}
+                      >
+                        <RechartsPrimitive.PolarGrid />
+                        <RechartsPrimitive.PolarAngleAxis dataKey="concept" />
+                        <RechartsPrimitive.PolarRadiusAxis />
+                        <RechartsPrimitive.Radar dataKey="score" stroke="var(--color-score)" fill="var(--color-score)" fillOpacity={0.6} />
+                        <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
+                      </RechartsPrimitive.RadarChart>
+                    </RechartsPrimitive.ResponsiveContainer>
+                  )}
                 </ChartContainer>
               </div>
             </div>
@@ -433,7 +517,27 @@ const ReportsPage = () => {
                     highest: { color: "hsl(var(--accent))" }
                   }}
                 >
-                  {renderTopicBarChart}
+                  {() => (
+                    <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+                      <RechartsPrimitive.BarChart
+                        data={[
+                          { topic: "Equations", average: 82, highest: 95 },
+                          { topic: "Fractions", average: 75, highest: 92 },
+                          { topic: "Functions", average: 68, highest: 88 },
+                          { topic: "Graphing", average: 72, highest: 90 },
+                          { topic: "Word Problems", average: 65, highest: 85 }
+                        ]}
+                      >
+                        <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
+                        <RechartsPrimitive.XAxis dataKey="topic" />
+                        <RechartsPrimitive.YAxis />
+                        <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
+                        <RechartsPrimitive.Legend />
+                        <RechartsPrimitive.Bar dataKey="average" fill="var(--color-average)" />
+                        <RechartsPrimitive.Bar dataKey="highest" fill="var(--color-highest)" />
+                      </RechartsPrimitive.BarChart>
+                    </RechartsPrimitive.ResponsiveContainer>
+                  )}
                 </ChartContainer>
               </div>
             </div>

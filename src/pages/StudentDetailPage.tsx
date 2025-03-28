@@ -1,4 +1,3 @@
-
 import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -107,37 +106,6 @@ const studentsData = {
     ]
   }
 };
-
-// Render function for bar chart
-const renderBarChart = (studentData: any) => (
-  <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
-    <RechartsPrimitive.BarChart
-      data={studentData.subjects}
-      layout="vertical"
-    >
-      <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
-      <RechartsPrimitive.XAxis type="number" />
-      <RechartsPrimitive.YAxis dataKey="name" type="category" />
-      <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
-      <RechartsPrimitive.Bar dataKey="score" fill="var(--color-score)" />
-    </RechartsPrimitive.BarChart>
-  </RechartsPrimitive.ResponsiveContainer>
-);
-
-// Render function for line chart
-const renderLineChart = (studentData: any) => (
-  <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
-    <RechartsPrimitive.LineChart
-      data={studentData.trends}
-    >
-      <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
-      <RechartsPrimitive.XAxis dataKey="month" />
-      <RechartsPrimitive.YAxis />
-      <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
-      <RechartsPrimitive.Line type="monotone" dataKey="score" stroke="var(--color-score)" strokeWidth={2} />
-    </RechartsPrimitive.LineChart>
-  </RechartsPrimitive.ResponsiveContainer>
-);
 
 const StudentDetailPage = () => {
   const { studentId } = useParams<{ studentId: string }>();
@@ -252,7 +220,20 @@ const StudentDetailPage = () => {
                 score: { color: "hsl(var(--primary))" }
               }}
             >
-              {() => renderBarChart(student)}
+              {() => (
+                <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+                  <RechartsPrimitive.BarChart
+                    data={student.subjects}
+                    layout="vertical"
+                  >
+                    <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
+                    <RechartsPrimitive.XAxis type="number" />
+                    <RechartsPrimitive.YAxis dataKey="name" type="category" />
+                    <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
+                    <RechartsPrimitive.Bar dataKey="score" fill="var(--color-score)" />
+                  </RechartsPrimitive.BarChart>
+                </RechartsPrimitive.ResponsiveContainer>
+              )}
             </ChartContainer>
           </div>
         </Card>
@@ -278,7 +259,19 @@ const StudentDetailPage = () => {
                     score: { color: "hsl(var(--primary))" }
                   }}
                 >
-                  {() => renderLineChart(student)}
+                  {() => (
+                    <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
+                      <RechartsPrimitive.LineChart
+                        data={student.trends}
+                      >
+                        <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
+                        <RechartsPrimitive.XAxis dataKey="month" />
+                        <RechartsPrimitive.YAxis />
+                        <RechartsPrimitive.Tooltip formatter={(value) => `${value}%`} />
+                        <RechartsPrimitive.Line type="monotone" dataKey="score" stroke="var(--color-score)" strokeWidth={2} />
+                      </RechartsPrimitive.LineChart>
+                    </RechartsPrimitive.ResponsiveContainer>
+                  )}
                 </ChartContainer>
               </div>
             </Card>
