@@ -1,11 +1,12 @@
 
-import { BookOpen, PlusCircle, BarChart, Users, Clock } from "lucide-react";
+import { BookOpen, PlusCircle, BarChart, Users, Clock, ArrowRight, Bell } from "lucide-react";
 import ClassCard from "@/components/dashboard/ClassCard";
 import StatCard from "@/components/dashboard/StatCard";
 import QuickActionCard from "@/components/dashboard/QuickActionCard";
 import SubjectPerformanceCard from "@/components/dashboard/SubjectPerformanceCard";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 // Mock data for demonstration
 const classes = [
@@ -23,6 +24,58 @@ const subjectPerformanceData = [
   { name: "English", avgScore: 85, studentCount: 105, passingRate: 96, topPerformer: "Taylor S." }
 ];
 
+// Mock data for recent activity
+const recentActivities = [
+  { 
+    id: '1',
+    type: 'submissions',
+    icon: Users,
+    iconBg: 'bg-blue-100',
+    iconColor: 'text-blue-600',
+    title: '5 new submissions',
+    content: 'in Math 101 - Algebra Quiz',
+    time: '2 hours ago',
+    actionText: 'Review submissions',
+    actionLink: '/review/math-101/quiz-1'
+  },
+  { 
+    id: '2',
+    type: 'content',
+    icon: PlusCircle,
+    iconBg: 'bg-green-100',
+    iconColor: 'text-green-600',
+    title: 'New quiz created',
+    content: 'Science 101 - Forces and Motion',
+    time: 'Yesterday',
+    actionText: 'View quiz',
+    actionLink: '/content/science-101/quiz-2'
+  },
+  { 
+    id: '3',
+    type: 'report',
+    icon: BarChart,
+    iconBg: 'bg-purple-100',
+    iconColor: 'text-purple-600',
+    title: 'Performance report ready',
+    content: 'for History 101',
+    time: '2 days ago',
+    actionText: 'View report',
+    actionLink: '/reports?class=history-101'
+  },
+  { 
+    id: '4',
+    type: 'notification',
+    icon: Bell,
+    iconBg: 'bg-orange-100',
+    iconColor: 'text-orange-600',
+    title: 'Grading reminder',
+    content: '8 assignments pending review',
+    time: '3 days ago',
+    actionText: 'View pending',
+    actionLink: '/pending-reviews'
+  },
+];
+
 const Dashboard = () => {
   return (
     <div className="animate-fade-in">
@@ -30,6 +83,21 @@ const Dashboard = () => {
         <div>
           <h1 className="text-3xl font-bold text-gray-800">Teacher Dashboard</h1>
           <p className="text-gray-600 mt-1">Welcome back, Ms. Johnson</p>
+        </div>
+        
+        <div className="hidden md:flex items-center gap-3">
+          <Button variant="outline" asChild>
+            <Link to="/manage-students">
+              <Users className="h-4 w-4 mr-1" />
+              Manage Students
+            </Link>
+          </Button>
+          <Button asChild>
+            <Link to="/create-class">
+              <PlusCircle className="h-4 w-4 mr-1" />
+              Add Class
+            </Link>
+          </Button>
         </div>
       </div>
 
@@ -94,76 +162,64 @@ const Dashboard = () => {
         />
       </div>
 
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-800">Your Classes</h2>
-          <Button asChild>
-            <Link to="/create-class">
-              <PlusCircle className="h-4 w-4 mr-1" />
-              Add Class
-            </Link>
-          </Button>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {classes.map((classItem) => (
-            <ClassCard
-              key={classItem.id}
-              id={classItem.id}
-              name={classItem.name}
-              subject={classItem.subject}
-              studentCount={classItem.studentCount}
-              activeContent={classItem.activeContent}
-              color={classItem.color}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-800">Recent Activity</h2>
-          <Button variant="outline" asChild>
-            <Link to="/activity">View All</Link>
-          </Button>
-        </div>
-        <div className="dashboard-card">
-          <div className="space-y-4">
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-                <Users className="w-4 h-4" />
-              </div>
-              <div>
-                <p className="text-sm">
-                  <span className="font-medium">5 new submissions</span> in <span className="text-teacher-primary">Math 101 - Algebra Quiz</span>
-                </p>
-                <p className="text-xs text-gray-500 mt-1">2 hours ago</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
-                <PlusCircle className="w-4 h-4" />
-              </div>
-              <div>
-                <p className="text-sm">
-                  <span className="font-medium">New quiz created</span> - <span className="text-teacher-primary">Science 101 - Forces and Motion</span>
-                </p>
-                <p className="text-xs text-gray-500 mt-1">Yesterday</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
-                <BarChart className="w-4 h-4" />
-              </div>
-              <div>
-                <p className="text-sm">
-                  <span className="font-medium">Performance report</span> for <span className="text-teacher-primary">History 101</span> is ready
-                </p>
-                <p className="text-xs text-gray-500 mt-1">2 days ago</p>
-              </div>
-            </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div className="lg:col-span-2">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-gray-800">Your Classes</h2>
+            <Button asChild>
+              <Link to="/create-class">
+                <PlusCircle className="h-4 w-4 mr-1" />
+                Add Class
+              </Link>
+            </Button>
           </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+            {classes.map((classItem) => (
+              <ClassCard
+                key={classItem.id}
+                id={classItem.id}
+                name={classItem.name}
+                subject={classItem.subject}
+                studentCount={classItem.studentCount}
+                activeContent={classItem.activeContent}
+                color={classItem.color}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-gray-800">Recent Activity</h2>
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/activity">
+                View All
+              </Link>
+            </Button>
+          </div>
+          <Card>
+            <CardContent className="p-4">
+              <div className="space-y-5">
+                {recentActivities.map((activity) => (
+                  <div key={activity.id} className="flex items-start gap-3 group">
+                    <div className={`w-9 h-9 mt-0.5 rounded-full ${activity.iconBg} flex items-center justify-center ${activity.iconColor} shrink-0`}>
+                      <activity.icon className="w-4 h-4" />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm">
+                        <span className="font-medium">{activity.title}</span> {activity.content && <span className="text-teacher-primary">{activity.content}</span>}
+                      </p>
+                      <p className="text-xs text-gray-500">{activity.time}</p>
+                      <Link to={activity.actionLink} className="inline-flex items-center text-xs font-medium text-teacher-primary opacity-0 group-hover:opacity-100 transition-opacity hover:underline">
+                        {activity.actionText}
+                        <ArrowRight className="h-3 w-3 ml-1" />
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
