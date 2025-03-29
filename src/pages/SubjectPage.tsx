@@ -1,13 +1,12 @@
-
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PlusCircle, BookOpen, Users, BarChart, Clock } from "lucide-react";
-import ContentList from "@/components/content/ContentList";
+import ContentList, { ContentItemType } from "@/components/content/ContentList";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import PerformanceChart from "@/components/dashboard/PerformanceChart";
-import RecentActivity from "@/components/dashboard/RecentActivity";
+import RecentActivity, { ActivityItemProps } from "@/components/dashboard/RecentActivity";
 
 // Mock data for the subject page
 const subjectDetails = {
@@ -46,7 +45,7 @@ const subjectDetails = {
 };
 
 // Mock content data by subject
-const mockContentBySubject = {
+const mockContentBySubject: { [key: string]: ContentItemType[] } = {
   "math": [
     { id: "quiz-1", title: "Algebra Fundamentals", type: "quiz", status: "published", timeLimit: 30, questionCount: 10, submissions: 28, dueDate: "Apr 15, 2023" },
     { id: "practice-1", title: "Equations Practice Set", type: "practice", status: "published", questionCount: 20, submissions: 15 },
@@ -81,9 +80,10 @@ const performanceData = [
 ];
 
 // Recent activities
-const recentSubjectActivities = [
+const recentSubjectActivities: ActivityItemProps[] = [
   { 
     id: '1',
+    type: 'submission',
     icon: Users,
     iconBg: 'bg-blue-100',
     iconColor: 'text-blue-600',
@@ -95,6 +95,7 @@ const recentSubjectActivities = [
   },
   { 
     id: '2',
+    type: 'performance',
     icon: BarChart,
     iconBg: 'bg-green-100',
     iconColor: 'text-green-600',
@@ -106,6 +107,7 @@ const recentSubjectActivities = [
   },
   { 
     id: '3',
+    type: 'content',
     icon: BookOpen,
     iconBg: 'bg-purple-100',
     iconColor: 'text-purple-600',

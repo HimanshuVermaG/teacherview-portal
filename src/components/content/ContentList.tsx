@@ -4,7 +4,7 @@ import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ContentCard from "@/components/content/ContentCard";
 
-type ContentItemType = {
+export type ContentItemType = {
   id: string;
   title: string;
   type: "quiz" | "practice" | "test";
