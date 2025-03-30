@@ -55,7 +55,7 @@ const LoginPage = () => {
             <CardDescription>Login to access your dashboard</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Alert variant="info" className="bg-blue-50 border-blue-200">
+            <Alert variant="default" className="bg-blue-50 border-blue-200">
               <AlertCircleIcon className="h-4 w-4" />
               <AlertTitle>Dummy Account</AlertTitle>
               <AlertDescription className="text-xs">
