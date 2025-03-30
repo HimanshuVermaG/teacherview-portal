@@ -22,6 +22,18 @@ type AuthContextType = {
   logout: () => void;
 };
 
+// Dummy account for testing
+const dummyAccount = {
+  id: "dummy123",
+  name: "Test Student",
+  fatherName: "Test Father",
+  schoolName: "Test School",
+  mobile: 1234567890,
+  standard: 8,
+  sirNumber: "test123",
+  password: "password123"
+};
+
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -44,6 +56,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (sirNumber: string, password: string): Promise<boolean> => {
     setLoading(true);
+    
+    // Check if the input matches the dummy account
+    if (sirNumber === dummyAccount.sirNumber && password === dummyAccount.password) {
+      const userData = {
+        id: dummyAccount.id,
+        name: dummyAccount.name,
+        fatherName: dummyAccount.fatherName,
+        schoolName: dummyAccount.schoolName,
+        mobile: dummyAccount.mobile,
+        standard: dummyAccount.standard,
+        sirNumber: dummyAccount.sirNumber,
+      };
+      
+      setUser(userData);
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("token", "dummy-token-for-testing");
+      
+      toast({
+        title: "Login successful",
+        description: `Welcome back, ${userData.name}!`,
+      });
+      
+      setLoading(false);
+      return true;
+    }
+    
     try {
       const response = await fetch("http://localhost:8000/api/v1/student/login", {
         method: "POST",

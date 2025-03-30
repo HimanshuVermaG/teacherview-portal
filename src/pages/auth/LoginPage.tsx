@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { EyeIcon, EyeOffIcon, LogInIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon, LogInIcon, AlertCircleIcon } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const loginSchema = z.object({
   sirNumber: z.string().min(1, { message: "SIR Number is required" }),
@@ -38,6 +39,11 @@ const LoginPage = () => {
     }
   };
 
+  const fillDummyCredentials = () => {
+    form.setValue("sirNumber", "test123");
+    form.setValue("password", "password123");
+  };
+
   const toggleShowPassword = () => setShowPassword(!showPassword);
 
   return (
@@ -48,7 +54,27 @@ const LoginPage = () => {
             <CardTitle className="text-2xl font-bold">TeacherView Portal</CardTitle>
             <CardDescription>Login to access your dashboard</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-4">
+            <Alert variant="info" className="bg-blue-50 border-blue-200">
+              <AlertCircleIcon className="h-4 w-4" />
+              <AlertTitle>Dummy Account</AlertTitle>
+              <AlertDescription className="text-xs">
+                Use these credentials to test login:
+                <br />
+                <strong>SIR Number:</strong> test123
+                <br />
+                <strong>Password:</strong> password123
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="mt-2 text-xs"
+                  onClick={fillDummyCredentials}
+                >
+                  Fill Credentials
+                </Button>
+              </AlertDescription>
+            </Alert>
+
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
