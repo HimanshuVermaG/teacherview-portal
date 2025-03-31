@@ -21,7 +21,7 @@ type ContentListProps = {
   createLink?: string;
 };
 
-const ContentList = ({ title = "Content", content, createLink = "/create" }: ContentListProps) => {
+const ContentList = ({ title = "Content", content, createLink = "/teacher/create" }: ContentListProps) => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-4">

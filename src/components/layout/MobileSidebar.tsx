@@ -38,7 +38,7 @@ const MobileSidebar = ({ open, onClose }: MobileSidebarProps) => {
   const location = useLocation();
   
   const isActive = (path: string) => location.pathname === path;
-  const isClassActive = (classId: string) => location.pathname.includes(`/class/${classId}`);
+  const isClassActive = (classId: string) => location.pathname.includes(`/teacher/class/${classId}`);
 
   if (!open) return null;
   
@@ -63,38 +63,38 @@ const MobileSidebar = ({ open, onClose }: MobileSidebarProps) => {
             <h2 className="text-xs uppercase text-gray-500 font-semibold tracking-wider">Main Menu</h2>
             <nav className="flex flex-col gap-1">
               <NavItem 
-                to="/" 
+                to="/teacher" 
                 label="Dashboard" 
                 icon={<Layers className="h-5 w-5" />} 
-                active={isActive("/")}
+                active={isActive("/teacher")}
                 onClick={onClose}
               />
               <NavItem 
-                to="/create" 
+                to="/teacher/create" 
                 label="Create Content" 
                 icon={<PlusCircle className="h-5 w-5" />} 
-                active={isActive("/create")}
+                active={isActive("/teacher/create")}
                 onClick={onClose}
               />
               <NavItem 
-                to="/reports" 
+                to="/teacher/reports" 
                 label="Student Reports" 
                 icon={<BarChart className="h-5 w-5" />} 
-                active={isActive("/reports")}
+                active={isActive("/teacher/reports")}
                 onClick={onClose}
               />
               <NavItem 
-                to="/manage-students" 
+                to="/teacher/manage-students" 
                 label="Manage Students" 
                 icon={<Users className="h-5 w-5" />} 
-                active={isActive("/manage-students")}
+                active={isActive("/teacher/manage-students")}
                 onClick={onClose}
               />
               <NavItem 
-                to="/activity" 
+                to="/teacher/activity" 
                 label="Activity Log" 
                 icon={<Activity className="h-5 w-5" />} 
-                active={isActive("/activity")}
+                active={isActive("/teacher/activity")}
                 onClick={onClose}
               />
             </nav>
@@ -104,21 +104,21 @@ const MobileSidebar = ({ open, onClose }: MobileSidebarProps) => {
             <h2 className="text-xs uppercase text-gray-500 font-semibold tracking-wider">Classes</h2>
             <nav className="flex flex-col gap-1">
               <NavItem 
-                to="/class/class-6" 
+                to="/teacher/class/class-6" 
                 label="Class 6" 
                 icon={<BookOpen className="h-5 w-5" />} 
                 active={isClassActive("class-6")}
                 onClick={onClose}
               />
               <NavItem 
-                to="/class/class-7" 
+                to="/teacher/class/class-7" 
                 label="Class 7" 
                 icon={<BookOpen className="h-5 w-5" />} 
                 active={isClassActive("class-7")}
                 onClick={onClose}
               />
               <NavItem 
-                to="/class/class-8" 
+                to="/teacher/class/class-8" 
                 label="Class 8" 
                 icon={<BookOpen className="h-5 w-5" />} 
                 active={isClassActive("class-8")}
@@ -131,17 +131,17 @@ const MobileSidebar = ({ open, onClose }: MobileSidebarProps) => {
             <h2 className="text-xs uppercase text-gray-500 font-semibold tracking-wider">Other</h2>
             <nav className="flex flex-col gap-1">
               <NavItem 
-                to="/calendar" 
+                to="/teacher/calendar" 
                 label="Calendar" 
                 icon={<Calendar className="h-5 w-5" />} 
-                active={isActive("/calendar")}
+                active={isActive("/teacher/calendar")}
                 onClick={onClose}
               />
               <NavItem 
-                to="/settings" 
+                to="/teacher/settings" 
                 label="Settings" 
                 icon={<Settings className="h-5 w-5" />} 
-                active={isActive("/settings")}
+                active={isActive("/teacher/settings")}
                 onClick={onClose}
               />
             </nav>

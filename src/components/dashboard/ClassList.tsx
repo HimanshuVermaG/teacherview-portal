@@ -21,7 +21,7 @@ const ClassList = ({ classes }: ClassListProps) => {
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-gray-800">Your Classes</h2>
         <Button asChild>
-          <Link to="/create-class">
+          <Link to="/teacher/create-class">
             <PlusCircle className="h-4 w-4 mr-1" />
             Add Class
           </Link>

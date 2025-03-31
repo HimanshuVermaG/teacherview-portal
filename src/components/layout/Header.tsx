@@ -14,7 +14,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
         <Button variant="ghost" size="icon" className="md:hidden" onClick={onMenuClick}>
           <Menu className="h-5 w-5" />
         </Button>
-        <Link to="/" className="text-xl font-bold text-teacher-primary">
+        <Link to="/teacher" className="text-xl font-bold text-teacher-primary">
           TeacherView Portal
         </Link>
       </div>

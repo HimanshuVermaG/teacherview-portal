@@ -24,7 +24,7 @@ const ClassCard = ({ id, name, subject, studentCount, activeContent, color = "bl
   const selectedColor = colorVariants[color as keyof typeof colorVariants] || colorVariants.blue;
 
   return (
-    <Link to={`/class/${id}`} className="dashboard-card group transition-all">
+    <Link to={`/teacher/class/${id}`} className="dashboard-card group transition-all">
       <div className={cn("h-3 rounded-t-lg mb-4 bg-gradient-to-r -mx-6 -mt-6", selectedColor)}></div>
       <h3 className="text-lg font-semibold mb-1">{name}</h3>
       <p className="text-sm text-gray-500 mb-4">{subject}</p>

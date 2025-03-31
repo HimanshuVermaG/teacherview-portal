@@ -35,7 +35,7 @@ const recentActivities = [
     content: 'in Class 6 - Mathematics Quiz',
     time: '2 hours ago',
     actionText: 'Review submissions',
-    actionLink: '/class/class-6/subject/math'
+    actionLink: '/teacher/class/class-6/subject/math'
   },
   { 
     id: '2',
@@ -47,7 +47,7 @@ const recentActivities = [
     content: 'Class 7 - Science Forces and Motion',
     time: 'Yesterday',
     actionText: 'View quiz',
-    actionLink: '/class/class-7/subject/science'
+    actionLink: '/teacher/class/class-7/subject/science'
   },
   { 
     id: '3',
@@ -59,7 +59,7 @@ const recentActivities = [
     content: 'for Class 8 History',
     time: '2 days ago',
     actionText: 'View report',
-    actionLink: '/reports?class=class-8'
+    actionLink: '/teacher/reports?class=class-8'
   },
   { 
     id: '4',
@@ -71,7 +71,7 @@ const recentActivities = [
     content: '8 assignments pending review',
     time: '3 days ago',
     actionText: 'View pending',
-    actionLink: '/activity'
+    actionLink: '/teacher/activity'
   },
 ];
 
@@ -86,13 +86,13 @@ const Dashboard = () => {
         
         <div className="hidden md:flex items-center gap-3">
           <Button variant="outline" asChild>
-            <Link to="/manage-students">
+            <Link to="/teacher/manage-students">
               <Users className="h-4 w-4 mr-1" />
               Manage Students
             </Link>
           </Button>
           <Button asChild>
-            <Link to="/create-class">
+            <Link to="/teacher/create-class">
               <PlusCircle className="h-4 w-4 mr-1" />
               Add Class
             </Link>
@@ -136,21 +136,21 @@ const Dashboard = () => {
           title="Create Quiz"
           description="Create a new quiz or test"
           icon={PlusCircle}
-          to="/create"
+          to="/teacher/create"
           color="primary"
         />
         <QuickActionCard
           title="Student Reports"
           description="View detailed analytics"
           icon={BarChart}
-          to="/reports"
+          to="/teacher/reports"
           color="secondary"
         />
         <QuickActionCard
           title="Manage Students"
           description="Add or update student records"
           icon={Users}
-          to="/manage-students"
+          to="/teacher/manage-students"
           color="accent"
         />
       </div>

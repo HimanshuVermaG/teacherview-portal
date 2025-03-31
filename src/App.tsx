@@ -25,14 +25,14 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
-            <Route path="/" element={<Index />} />
-            <Route path="/class/:classId" element={<ClassPage />} />
-            <Route path="/class/:classId/subject/:subjectId" element={<SubjectPage />} />
-            <Route path="/create" element={<CreateContentPage />} />
-            <Route path="/reports" element={<ReportsPage />} />
-            <Route path="/student/:studentId" element={<StudentDetailPage />} />
-            <Route path="/manage-students" element={<ManageStudentsPage />} />
-            <Route path="/activity" element={<ActivityPage />} />
+            <Route path="/teacher" element={<Index />} />
+            <Route path="/teacher/class/:classId" element={<ClassPage />} />
+            <Route path="/teacher/class/:classId/subject/:subjectId" element={<SubjectPage />} />
+            <Route path="/teacher/create" element={<CreateContentPage />} />
+            <Route path="/teacher/reports" element={<ReportsPage />} />
+            <Route path="/teacher/student/:studentId" element={<StudentDetailPage />} />
+            <Route path="/teacher/manage-students" element={<ManageStudentsPage />} />
+            <Route path="/teacher/activity" element={<ActivityPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
